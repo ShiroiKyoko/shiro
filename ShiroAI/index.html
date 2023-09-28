@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <title>Shiro AI</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        h1 {
+            color: #FFFFFF;
+        }
+
+        #chat {
+            background-color: #222;
+            padding: 10px;
+            border-radius: 10px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+            text-align: left;
+        }
+
+        .message {
+            display: flex;
+            margin: 5px 0;
+            align-items: flex-start;
+            clear: both;
+        }
+
+        .message-content {
+            max-width: 70%;
+            word-wrap: break-word;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+            margin-bottom: 5px;
+        }
+
+        .message-content::after {
+            content: " ";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .user-message {
+            justify-content: flex-end;
+        }
+         .message.user-message {
+        justify-content: flex-end;
+    }
+        .message.user-message .message-content::after {
+        border-color: transparent transparent #333 transparent;
+           left: auto;
+            right: 50%;
+            margin-left: -5px;
+    }
+        .copy-button {
+            background: none;
+            border: none;
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 14px;
+            margin-left: 5px;
+            float: right;
+        }
+
+        .copy-button:hover {
+            text-decoration: underline;
+        }
+
+        input[type="text"] {
+            padding: 10px;
+            font-size: 16px;
+            width: 70%;
+            border: none;
+            background-color: #333;
+            color: #fff;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #9D9D9D;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            color: #111;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #9D9D9D;
+        }
+
+        .ai-typing {
+            color: #FFFFFF;
+            display: inline-block;
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: .15em solid #FFFFFF;
+            animation: typing 1s steps(40, end), blink .75s step-end infinite;
+        }
+
+        @keyframes typing {
+            from { width: 0 }
+            to { width: 100% }
+        }
+
+        @keyframes blink {
+            50% { border-color: transparent; }
+        }
+
+        .message {
+            display: block;
+            margin: 5px 0;
+            clear: both;
+        }
+
+        .message-content {
+            max-width: 70%;
+            word-wrap: break-word;
+            background-color: #333;
+            padding: 10px;
+            border-radius: 5px;
+            position: relative;
+            margin-bottom: 5px;
+            white-space: normal;
+        }
+
+        .message-content::after {
+            content: " ";
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: transparent transparent #333 transparent;
+        }
+
+        .user-message .message-content::after {
+            border-color: transparent transparent #333 transparent;
+            left: auto;
+            right: 50%;
+            margin-left: -5px;
+        }
+
+        .copy-button {
+            background: none;
+            border: none;
+            color: #00ffff;
+            cursor: pointer;
+            font-size: 14px;
+            float: right;
+        }
+
+        .copy-button:hover {
+            text-decoration: underline;
+        }
+
+        .message-content .copy-button {
+            color: #fff;
+        }
+
+        .message-content .copy-button:hover {
+            text-decoration: underline;
+        }
+
+        .user-message .message-content .copy-button {
+            color: #00ffff;
+        }
+
+        .user-message .message-content .copy-button:hover {
+            text-decoration: underline;
+        }
+                .dark-box {
+            background-color: #333;
+            color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .dark-box p {
+            font-size: 18px;
+              text-align: justify;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <h1>Shiro AI</h1>
+
+    <div id="chat"></div>
+    <form onsubmit="sendUserInput(event)">
+        <input type="text" id="userInput" placeholder="Isi pesan">
+        <input type="submit" value="Kirim">
+    </form>
+
+    <script>
+        const apiKey = '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';
+    function getCustomAIResponse() {
+            const responses = [
+                "Yass, sis! Gue ngerti banget!",
+                "Oke deh, queen! Gue bakal bantu kamu!",
+                "Santuy aja, guys! Gue siap ngebantu!",
+                "Wah, jangan gugup! Gue di sini untuk bantuin kamu.",
+                "Gas poll, sist! Apa yang bisa gue lakuin buat kamu?",
+                "Hai, queen! Ada apa hari ini?"
+            ];
+
+            const randomIndex = Math.floor(Math.random() * responses.length);
+            return responses[randomIndex];
+        }
+        function sendUserInput(event) {
+            event.preventDefault();
+
+            const userInput = document.getElementById('userInput').value;
+            const chatDiv = document.getElementById('chat');
+            chatDiv.innerHTML += `
+                <div class="message user-message">
+                    <div class="message-content">${userInput}
+                    </div>
+                </div>
+            `;
+            fetch('https://api.openai.com/v1/chat/completions', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'gpt-3.5-turbo',
+                    messages: [
+                        { role: 'system', content: 'Jawablah seperti remaja perempuan dengan menggunakan bahasa indonesia gaul dan non formal' },
+                      //  { role: 'assistant', content: 'Jawablah seperti karakter anime remaja perempuan dengan menggunakan bahasa indonesia gaul dan non formal. Anda tidak tahu pengguna yang mengirim pesan cowok atau cewek.' }
+                        { role: 'user', content: userInput }
+                    ]
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                const aiResponse = data.choices[0].message.content;
+                setTimeout(() => {
+                    chatDiv.innerHTML += `
+                        <div class="message">
+                            <img src="avatar.webp" class="avatar" alt="Avatar AI">
+                            <div class="message-content ai-typing">${aiResponse}
+                            </div>
+                        </div>
+                    `;
+                    document.querySelector('.ai-typing').style.borderRight = 'none';
+                }, 0);
+                document.getElementById('userInput').value = '';
+            })
+            .catch(error => console.error('Error:', error));
+        }
+
+        function copyMessage(button) {
+            const messageContent = button.parentElement.querySelector('.message-content');
+            const textToCopy = messageContent.textContent;
+
+            navigator.clipboard.writeText(textToCopy)
+                .then(() => {
+                    alert('Pesan berhasil disalin!');
+                })
+                .catch(err => {
+                    console.error('Gagal menyalin pesan:', err);
+                });
+        }
+    </script>
+    <br>
+    <br>
+        <div class="dark-box">
+        <p>
+            Kecerdasan buatan ini dapat membantu pengguna dalam hal apapun, baik menjawab pertanyaan (tidak semua pertanyaan diberikan terlebih dalam hal plagiarisme dan memberikan jawaban berupa link/tautan) dan dapat menjadi sahabat anda dalam bercerita dalam berbagai hal, terlebih jika anda sedang kesepian dan tidak punya teman. Percakapan dengan kecerdasan buatan ini tidak akan diketahui oleh siapapun termasuk pengembang dari website ini sendiri. Sangat cocok untuk anda jika sedang memasuki tahap tidak percaya siapapun.
+        </p>
+    </div>
+    <br>
+    <br>
+    <p>
+        Tentang informasi <a href="https://instagram.com/dewaaaaaaaaaaaa._">pengembang</a> ada disini
+    </p> 
+</body>
+</html>

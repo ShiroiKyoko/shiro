@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiro Official</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+
+        .header {
+            background-color: #222;
+            text-align: center;
+            padding: 20px;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header h1 {
+            color: #ffffffff;
+        }
+
+        .menu {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+            animation: fadeIn 1s ease-out;
+        }
+
+        .menu li {
+            display: inline-block;
+            margin: 0 10px;
+        }
+
+        .menu a {
+            color: #ffffffff;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        .menu a:hover {
+            color: #ffffffff;
+        }
+
+        .content {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+            background-color: #333;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255);
+            animation: fadeIn 1s ease-out;
+        }
+    </style>
+         <script>
+        window.onload = function() {
+            var attempt = 3;
+            var password = "HaiHaiYo 0";
+
+            function checkPassword() {
+                var input = prompt("Masukkan kata sandi:");
+
+                if (input !== password) {
+                    attempt--;
+                    alert("Kata sandi salah! Anda memiliki " + attempt + " percobaan tersisa.");
+
+                    if (attempt > 0) {
+                        checkPassword();
+                    } else {
+                        alert("Anda telah melebihi batas percobaan. Halaman akan diarahkan kembali.");
+                        window.location.href = "http://shirokageyama.rf.gd/";
+                    }
+                }
+            }
+
+            checkPassword();
+        }
+    </script>
+</head>
+
+<body>
+    <div class="header">
+        <h1>Shiro Official</h1>
+        <h3>シロオフィシャル</h3>
+    </div>
+<br>
+<br>
+    <ul class="menu">
+        <li><a href="xss">XSS Test</a></li>
+        <li><a href="http://shirokageyama.rf.gd/ShiroAI/?">Shiro AI</a></li>
+        <li><a href="Developer">About Developer</a></li>
+    </ul>
+<br>
+<br>
+    <div class="content">
+        <h2>について</h2>
+        <p>
+            This is my place to hang out
+        </p>
+    </div>
+</body>
+
+</html>
