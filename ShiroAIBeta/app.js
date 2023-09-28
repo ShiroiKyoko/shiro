@@ -1,4 +1,4 @@
-const apiKey = 'ghjgjgh';
+const apiKey = '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';
 
 document.getElementById('send-button').addEventListener('click', () => {
     const userMessage = document.getElementById('user-message').value;
